@@ -1,10 +1,12 @@
 import Nav from "@/components/nav";
-import { Box } from "@mui/material";
+import View from "@/components/view"
+import { Box, Stack } from "@mui/material";
 
 export default function Home() {
   return (
-    <Box>
+    <Stack direction={'row'}>
       <Nav />
-    </Box>
+      <View />
+    </Stack>
   );
 }
