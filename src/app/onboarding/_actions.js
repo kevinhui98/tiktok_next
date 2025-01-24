@@ -2,7 +2,7 @@
 
 import { auth, clerkClient } from "@clerk/nextjs/server";
 
-export const completeOnboarding = async (formData: FormData) => {
+export const completeOnboarding = async (formData) => {
   const { userId } = await auth();
 
   if (!userId) {
