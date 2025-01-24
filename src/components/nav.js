@@ -1,3 +1,4 @@
+'use client'
 import { Box, Stack, Typography, TextField, InputAdornment, Button } from '@mui/material'
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
@@ -7,14 +8,10 @@ import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 import PersonOutlineoutlinedIcon from '@mui/icons-material/PersonOutlineoutlined';
 import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import VideoCallOutlinedIcon from '@mui/icons-material/VideoCallOutlined';
-import {
-    SignInButton,
-    SignedIn,
-    SignedOut,
-    UserButton
-} from '@clerk/nextjs'
+import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 import { red } from '@mui/material/colors';
 import React from 'react'
+import { useRouter } from 'next/navigation';
 const Nav = () => {
     const navbtn = [
         {
@@ -47,10 +44,11 @@ const Nav = () => {
         }
     ]
     const otherInfo = ["Company", "Program", "Terms & Policies"]
+    const Router = useRouter();
     return (
         <Stack direction={"column"} ml={2} mt={3} gap={1}>
             <Box mb={2}>
-                <Typography variant='h5'>
+                <Typography variant='h5' fontWeight={'bold'}>
                     TikTak
                 </Typography>
             </Box>
@@ -82,6 +80,17 @@ const Nav = () => {
                             height: "2.5rem", width: "13rem", justifyContent: 'start', transition: 'background-color 0.3s ease', '&:hover': {
                                 backgroundColor: 'gray',
                             },
+                        }} onClick={() => {
+                            if (idx == 3) {
+                                <>
+                                    <SignedIn>
+                                        {Router.push('/upload')}
+                                    </SignedIn>
+
+                                </>
+                            } else if (idx == 0) {
+                                { Router.push('/') }
+                            }
                         }}>
                             <Stack direction={"row"} alignItems={'center '} gap={1}>
                                 {btn.icon}
@@ -93,7 +102,7 @@ const Nav = () => {
             </Stack>
             <Box>
                 <SignedOut>
-                    <SignInButton mode='modal' >
+                    <SignInButton mode='modal'>
                         <Button sx={{ bgcolor: red[500], color: "white", height: "2.5rem", width: "13rem", justifyContent: 'center ' }} >
                             Log In
                         </Button>
