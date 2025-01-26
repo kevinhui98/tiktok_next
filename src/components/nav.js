@@ -88,6 +88,10 @@ const Nav = () => {
                                     </SignedIn>
 
                                 </>
+                            } else if (idx == 1) {
+                                { Router.push('/explore') }
+                            } else if (idx == 2) {
+                                { Router.push('/following') }
                             } else if (idx == 0) {
                                 { Router.push('/') }
                             }

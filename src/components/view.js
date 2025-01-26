@@ -82,7 +82,7 @@ const View = () => {
                                 alert("You bookmarked this video")
                                 // SetBookmarkClick(!bookmarkClick)
                                 // btn.clicked = likeClick
-                            } else {
+                            } else if (btn.idx == 3) {
                                 btn.clicked = !btn.clicked
                                 btn.clicked ? SetShareClick(btn.count++) : SetShareClick(btn.count--)
                                 alert("You shared this video")
