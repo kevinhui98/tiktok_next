@@ -21,14 +21,14 @@ const CDNURL =
   "https://kdrzgbdooarclrcudpzj.supabase.co/storage/v1/object/public/videos";
 
 // Video Component
-function Video({ src }) {
+function Video({ src, direction }) {
   return (
     <video
       controls
       autoPlay
       loop
       muted
-      className="round-xl object-cover h-full"
+      className={`round-xl object-cover h-full ${direction}`}
       width="33%"
       src={src}
       type="video/mp4"
@@ -38,6 +38,8 @@ function Video({ src }) {
 
 const View = () => {
   const [videos, setVideos] = useState([]);
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0); // Track current video index
+  const [direction, setDirection] = useState("slide-in"); // Track slide direction
 
   // Fetch videos from Supabase
   async function getVideos() {
@@ -80,11 +82,56 @@ const View = () => {
     );
   };
 
+  const handleArrowClick = (direction) => {
+    if (direction === "up") {
+      // Navigate to previous video
+      setDirection("slide-out-left");
+      setTimeout(() => {
+        setCurrentVideoIndex((prevIndex) =>
+          prevIndex === 0 ? videos.length - 1 : prevIndex - 1
+        );
+        setDirection("slide-in-right");
+      }, 300); // Match this with the transition duration
+    } else if (direction === "down") {
+      // Navigate to next video
+      setDirection("slide-out-right");
+      setTimeout(() => {
+        setCurrentVideoIndex((prevIndex) =>
+          prevIndex === videos.length - 1 ? 0 : prevIndex + 1
+        );
+        setDirection("slide-in-left");
+      }, 300); // Match this with the transition duration
+    }
+  };
+
+  // Handle keyboard arrow key presses
+  const handleKeyDown = (event) => {
+    if (event.key === "ArrowUp") {
+      handleArrowClick("up");
+    } else if (event.key === "ArrowDown") {
+      handleArrowClick("down");
+    }
+  };
+
+  // Add event listener for keydown when component mounts
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Cleanup event listener when component unmounts
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
   return (
     <Stack direction="row" width="90vw">
       <Stack direction="row" width="80vw" gap={2} justifyContent="center">
         {videos.length > 0 ? (
-          videos.map((videoSrc, index) => <Video key={index} src={videoSrc} />)
+          <Video
+            key={currentVideoIndex}
+            src={videos[currentVideoIndex]}
+            direction={direction}
+          />
         ) : (
           <Typography color="white">No videos found</Typography>
         )}
@@ -121,7 +168,7 @@ const View = () => {
       </Stack>
 
       <Stack direction="column" justifyContent="center" gap={2}>
-        <Button>
+        <Button onClick={() => handleArrowClick("up")}>
           <ArrowUpwardIcon
             fontSize="large"
             sx={{
@@ -134,7 +181,7 @@ const View = () => {
             }}
           />
         </Button>
-        <Button>
+        <Button onClick={() => handleArrowClick("down")}>
           <ArrowDownwardIcon
             fontSize="large"
             sx={{
