@@ -107,6 +107,8 @@ const Nav = () => {
                                 { Router.push('/explore') }
                             } else if (idx == 2) {
                                 { Router.push('/following') }
+                            } else if (idx == 4 || idx == 6) {
+                                { alert('The feature will be implemented in the future') }
                             } else if (idx == 0) {
                                 { Router.push('/') }
                             }
