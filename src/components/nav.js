@@ -60,21 +60,36 @@ const Nav = () => {
             <Stack gap={1}>
                 {navbtn.map((btn, idx) =>
                     idx == 5 ? (
-                        <Button key={idx} sx={{
-                            height: "2.5rem", width: "13rem", justifyContent: 'start', transition: 'background-color 0.3s ease', '&:hover': {
-                                backgroundColor: 'gray',
-                            },
-                        }}>
-                            <Stack direction={"row"} alignItems={'center '} gap={1}>
-                                <SignedIn>
-                                    <UserButton />
-                                </SignedIn>
-                                <SignedOut>
-                                    {btn.icon}
-                                </SignedOut>
-                                <Typography variant='body2' color='white' >{btn.name}</Typography>
-                            </Stack>
-                        </Button>
+                        <>
+                            <SignedIn>
+                                <Button key={idx} sx={{
+                                    height: "2.5rem", width: "13rem", justifyContent: 'start', transition: 'background-color 0.3s ease',
+                                    '&:hover': { backgroundColor: 'gray', },
+                                }}
+                                    onClick={() => {
+                                        Router.push("/profile")
+                                    }}>
+                                    <Stack direction={"row"} alignItems={'center '} gap={1}>
+                                        <UserButton />
+                                        <Typography variant='body2' color='white' >{btn.name}</Typography>
+                                    </Stack>
+                                </Button>
+                            </SignedIn>
+                            <SignedOut>
+                                <SignInButton mode='modal'>
+                                    <Button key={idx} sx={{
+                                        height: "2.5rem", width: "13rem", justifyContent: 'start', transition: 'background-color 0.3s ease', '&:hover': {
+                                            backgroundColor: 'gray',
+                                        },
+                                    }}>
+                                        <Stack direction={"row"} alignItems={'center '} gap={1}>
+                                            {btn.icon}
+                                            <Typography variant='body2' color='white' >{btn.name}</Typography>
+                                        </Stack>
+                                    </Button>
+                                </SignInButton>
+                            </SignedOut>
+                        </>
                     )
                         : (<Button key={idx} sx={{
                             height: "2.5rem", width: "13rem", justifyContent: 'start', transition: 'background-color 0.3s ease', '&:hover': {
@@ -92,6 +107,8 @@ const Nav = () => {
                                 { Router.push('/explore') }
                             } else if (idx == 2) {
                                 { Router.push('/following') }
+                            } else if (idx == 4 || idx == 6) {
+                                { alert('The feature will be implemented in the future') }
                             } else if (idx == 0) {
                                 { Router.push('/') }
                             }
@@ -120,7 +137,7 @@ const Nav = () => {
                 ))}
                 <Typography color='gray' variant='body3'>© 2025 TikTak</Typography>
             </Stack>
-        </Stack>
+        </Stack >
     )
 }
 export default Nav

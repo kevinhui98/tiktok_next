@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid2'
 import Nav from '@/components/nav';
 
-export default function Explore() {
+export default function Following() {
     const Item = styled(Paper)(({ theme }) => ({
         backgroundColor: '#fff',
         ...theme.typography.body2,
