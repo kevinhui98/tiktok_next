@@ -18,7 +18,9 @@
     "next": "15.1.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "supabase": "^2.9.6"
+    "supabase": "^2.9.6",
+    "tiktok_next": "file:",
+    "uuid": "^11.0.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
