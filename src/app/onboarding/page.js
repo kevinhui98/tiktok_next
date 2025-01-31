@@ -5,7 +5,7 @@ import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { completeOnboarding } from "./_actions";
 import { InterestSelector } from "@/components/interestSelector";
-import { Button, TextField } from "@mui/material";
+import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 
 export default function OnboardingComponent() {
     const [error, setError] = useState("");
@@ -18,7 +18,7 @@ export default function OnboardingComponent() {
         let update = []
         if (selectedInterests.includes(interest)) {
             update = selectedInterests.filter((i) => i !== interest)
-        } else if (selectedInterests.length < 5) update = [...selectedInterests, interest]
+        } if (selectedInterests.length < 5) { update = [...selectedInterests, interest] }
         setSelectedInterests(update)
         setCount(update.length)
     };
@@ -74,17 +74,15 @@ export default function OnboardingComponent() {
         }
     };
     return (
-        <div>
-            <h1>Welcome</h1>
-            <div>
-                <label>User Name</label>
-                <p>Enter your username.</p>
-                <TextField name="userName" required className='bg-white border rounded-xl' sx={{ color: 'black' }} label='User Name' onChange={(e) => SetUsername(e.target.value)} />
-            </div>
-            <h2>Select your interests (max 5):</h2>
-            <p>Select {5 - count} more</p>
-            <TextField onChange={(e) => setSearchTerm(e.target.value)} value={searchTerm} label="Search Interest" className='bg-white border rounded-xl' sx={{ color: 'black' }} />
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+        <Stack alignItems={'center'} px={'20%'}>
+            <Typography variant="h3">Welcome to TikTak</Typography>
+            <Typography variant="h5">Enter your username.</Typography>
+            <TextField fullWidth name="userName" required className='bg-white border rounded-xl' sx={{ color: 'black' }} label='User Name' onChange={(e) => SetUsername(e.target.value)} />
+
+            <Typography mt={3} variant="h5">Select your interests (max 5):</Typography>
+            <TextField fullWidth onChange={(e) => setSearchTerm(e.target.value)} value={searchTerm} label="Search Interest" className='bg-white border rounded-xl' sx={{ color: 'black' }} />
+            <Typography my={3} variant="subtitle1">Select {5 - count} more</Typography>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", alignItems: 'center', justifyContent: 'center' }}>
                 {filteredInterest.map((interest) => (
                     <button
                         key={interest}
@@ -107,17 +105,20 @@ export default function OnboardingComponent() {
                     </button>
                 ))}
             </div>
-            <h3>Selected Interests:</h3>
-            <ul>
+            <Typography variant="body1" mt={3}>Selected Interests:</Typography>
+            {/* <ul> */}
+            <Stack direction={'row'} gap={2} mb={3} mt={1}>
+
                 {selectedInterests.map((interest) => (
-                    <li key={interest}>{interest}</li>
-                ))}
-            </ul>
+                    <Typography key={interest}> {interest}</Typography>
+                ))
+                }
+            </Stack>
             {/* Hidden input to submit array via form */}
             <input type="hidden" name="items" value={JSON.stringify(selectedInterests)} />
 
             {error && <p className="text-red-600">Error: {error}</p>}
-            <Button type="submit" onClick={handleSubmit}>Submit</Button>
-        </div>
+            <Button type="submit" onClick={handleSubmit} className="border bg-white ">Submit</Button>
+        </Stack>
     );
 }
