@@ -15,12 +15,13 @@ export const completeOnboarding = async (formData) => {
     const res = await client.users.updateUser(userId, {
       publicMetadata: {
         onboardingComplete: true,
-        applicationName: formData.get("applicationName"),
-        applicationType: formData.get("applicationType"),
+        interest: formData['interest']
       },
+      username: formData['userName']
     });
+    console.log(res.publicMetadata)
     return { message: res.publicMetadata };
   } catch (err) {
-    return { error: "There was an error updating the user metadata." };
+    return { error: "There was an error updating the user metadata." + err };
   }
 };
