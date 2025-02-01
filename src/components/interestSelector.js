@@ -1,4 +1,5 @@
 "use client";
+import { TextField } from "@mui/material";
 import { useState } from "react";
 
 export const AVAILABLE_INTERESTS = {
@@ -42,30 +43,34 @@ export function InterestSelector({
   maxSelections = 5,
 }) {
   const [selectedInterests, setSelectedInterests] = useState(initialInterests);
-
+  const [count, setCount] = useState(selectedInterests.length)
   const toggleInterest = (interest) => {
     setSelectedInterests((prev) => {
       const isSelected = prev.includes(interest);
+      let updated = []
       if (isSelected) {
-        const updated = prev.filter((i) => i !== interest);
-        onInterestsChange(updated);
-        return updated;
+        updated = prev.filter((i) => i !== interest);
       } else if (prev.length < maxSelections) {
-        const updated = [...prev, interest];
-        onInterestsChange(updated);
-        return updated;
+        updated = [...prev, interest];
+      } else {
+        return prev;
       }
-      return prev;
+      onInterestsChange(updated);
+      setCount(updated.length)
+      return updated;
     });
   };
-
+  const [searchTerm, setSearchTerm] = useState('')
+  const filteredInterest = Object.values(AVAILABLE_INTERESTS).filter((interest) => interest.toLowerCase().includes(searchTerm.toLowerCase()))
   return (
     <div>
       <h2>Select your interests (max {maxSelections}):</h2>
+      <p>Select {5 - count} more</p>
+
       <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-        {Object.values(AVAILABLE_INTERESTS).map((interest) => (
+        {filteredInterest.map((interest, idx) => (
           <button
-            key={interest}
+            key={idx}
             onClick={() => toggleInterest(interest)}
             style={{
               padding: "10px",
@@ -77,6 +82,7 @@ export function InterestSelector({
               color: selectedInterests.includes(interest) ? "#fff" : "#000",
               cursor: "pointer",
             }}
+            data-value={interest}
           >
             {interest}
           </button>
@@ -89,6 +95,7 @@ export function InterestSelector({
             <li key={interest}>{interest}</li>
           ))}
         </ul>
+
       </div>
     </div>
   );
