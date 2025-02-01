@@ -88,7 +88,6 @@ export default function OnboardingComponent() {
                         key={interest}
                         onClick={() => {
                             toggleInterest(interest)
-                            console.log([...selectedInterests])
                         }}
                         style={{
                             padding: "10px",
