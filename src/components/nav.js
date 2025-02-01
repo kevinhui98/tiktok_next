@@ -15,7 +15,7 @@ import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 import PersonOutlineoutlinedIcon from "@mui/icons-material/PersonOutlineoutlined";
 import MoreHorizOutlinedIcon from "@mui/icons-material/MoreHorizOutlined";
 import VideoCallOutlinedIcon from "@mui/icons-material/VideoCallOutlined";
-import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { SignInButton, SignedIn, SignedOut, UserButton, SignOutButton } from "@clerk/nextjs";
 import { red } from "@mui/material/colors";
 import React from "react";
 import { useRouter } from "next/navigation";
@@ -256,6 +256,21 @@ const Nav = () => {
             </Button>
           </SignInButton>
         </SignedOut>
+        <SignedIn>
+          <SignOutButton>
+            <Button
+              sx={{
+                bgcolor: red[500],
+                color: "white",
+                height: "2.5rem",
+                width: "13rem",
+                justifyContent: "center",
+              }}
+            >
+              Log Out
+            </Button>
+          </SignOutButton>
+        </SignedIn>
       </Box>
       <Stack>
         {otherInfo.map((info, idx) => (
