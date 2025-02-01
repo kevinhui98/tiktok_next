@@ -11,25 +11,10 @@ import LightbulbIcon from "@mui/icons-material/Lightbulb";
 import { createClient } from "@supabase/supabase-js";
 import { v4 as uuidv4 } from "uuid";
 import { useDropzone } from "react-dropzone";
-import Image from "next/image";
 const supabase = createClient(
   "https://kdrzgbdooarclrcudpzj.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtkcnpnYmRvb2FyY2xyY3VkcHpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzgxMTM4MjMsImV4cCI6MjA1MzY4OTgyM30.KcO39OFW_lpMf284hmuCbCC6Y_QAO83K1ZaYf9WrvHE"
 );
-
-async function uploadFile(e) {
-  const videoFile = e.target.files[0];
-  console.log("Upload!");
-  const { error } = await supabase.storage
-    .from(videos)
-    .upload(uuidv4() + ".mp4", videoFile);
-
-  if (error) {
-    console.log(error);
-    alert("error uploading file to supabase");
-  }
-}
-
 
 export default function Upload() {
   async function uploadFile(e) {
@@ -91,10 +76,10 @@ export default function Upload() {
   });
   const handleUpload = async (event) => {
     event.preventDefault();
-    if (!video) return;
+    if (!uploadVideo) return;
 
     const formData = new FormData();
-    formData.append("file", video);
+    formData.append("file", uploadVideo);
 
     const response = await fetch("/api/upload", {
       method: "POST",
