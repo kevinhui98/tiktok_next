@@ -17,19 +17,6 @@ const supabase = createClient(
 );
 
 export default function Upload() {
-  async function uploadFile(e) {
-    const videoFile = e.target.files[0];
-    console.log("Upload!");
-    console.log(videoFile.size); // 50MB limit
-    const { error } = await supabase.storage
-      .from("videos")
-      .upload(uuidv4() + ".mp4", videoFile);
-
-    if (error) {
-      console.log(error);
-      alert("error uploading file to supabase");
-    }
-  }
   const fileReq = [
     {
       title: "Size and duration",
@@ -74,21 +61,19 @@ export default function Upload() {
     accept: "video/mp4", // Accept only video files
     maxSize: 500 * 1024 * 1024, // Limit file size to 500MB
   });
-  const handleUpload = async (event) => {
-    event.preventDefault();
-    if (!uploadVideo) return;
+  const uploadFile = async () => {
+    const videoFile = uploadVideo
+    console.log("Upload!");
+    console.log(videoFile.size); // 50MB limit
+    const { error } = await supabase.storage
+      .from("videos")
+      .upload(uuidv4() + ".mp4", videoFile);
 
-    const formData = new FormData();
-    formData.append("file", uploadVideo);
-
-    const response = await fetch("/api/upload", {
-      method: "POST",
-      body: formData,
-    });
-
-    const data = await response.json();
-    alert(data.message || "Upload successful!");
-  };
+    if (error) {
+      console.log(error);
+      alert("error uploading file to supabase");
+    }
+  }
   return (
     <Stack direction={"row"}>
       <Nav />
@@ -171,7 +156,7 @@ export default function Upload() {
               <Typography >Captions</Typography>
               <TextField required autoComplete label='captions' width={'100%'} fullWidth height={'100px'} minRows={10} multiline></TextField>
               <button
-                onClick={handleUpload}
+                onClick={uploadFile}
                 disabled={!uploadVideo}
                 style={{
                   marginTop: "20px",
