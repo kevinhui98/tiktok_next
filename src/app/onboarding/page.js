@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import { completeOnboarding } from "./_actions";
 import { InterestSelector } from "@/components/interestSelector";
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import { SupabaseAuthClient } from "@supabase/supabase-js/dist/module/lib/SupabaseAuthClient";
+import { createClient } from "@supabase/supabase-js";
 
 export default function OnboardingComponent() {
     const [error, setError] = useState("");
@@ -64,6 +66,15 @@ export default function OnboardingComponent() {
             userName: username,
             interest: [...selectedInterests],
         });
+        const supabase = createClient(
+            "https://kdrzgbdooarclrcudpzj.supabase.co",
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtkcnpnYmRvb2FyY2xyY3VkcHpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzgxMTM4MjMsImV4cCI6MjA1MzY4OTgyM30.KcO39OFW_lpMf284hmuCbCC6Y_QAO83K1ZaYf9WrvHE"
+          );
+        console.log("inserting user")
+        const { error } = await supabase 
+            .from("users")
+            .insert({uuid: user.id, username: username, interests: selectedInterests})
+        console.log(error)
         if (res?.message) {
             await user?.reload();
             console.log(res?.message)

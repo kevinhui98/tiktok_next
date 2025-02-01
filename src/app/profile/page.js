@@ -9,7 +9,7 @@ import { useUser } from '@clerk/nextjs'
 import SettingsIcon from '@mui/icons-material/Settings';
 export default function Profile() {
     const { isLoaded, isSignedIn, user } = useUser()
-    console.log(user)
+    console.log("user info: " + user)
     const Item = styled(Paper)(({ theme }) => ({
         backgroundColor: '#fff',
         ...theme.typography.body2,
