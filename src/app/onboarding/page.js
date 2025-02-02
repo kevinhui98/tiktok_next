@@ -16,6 +16,10 @@ export default function OnboardingComponent() {
     const router = useRouter();
     const [count, setCount] = useState(0)
     const [username, SetUsername] = useState([])
+    const supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    );
     const toggleInterest = (interest) => {
         let update = []
         if (selectedInterests.includes(interest)) {
@@ -60,20 +64,27 @@ export default function OnboardingComponent() {
     };
     const [searchTerm, setSearchTerm] = useState('')
     const filteredInterest = Object.values(AVAILABLE_INTERESTS).filter((interest) => interest.toLowerCase().includes(searchTerm.toLowerCase()))
+    const uploadImg = async (e) => {
+        e.preventDefault();
+        const image = user?.imageUrl ? user?.imageUrl : 'blank-pfp.png'
+        const name = (uuidv4() + '.png', image)
+        const { error } = await supabase.storage.from("pfp").upload()
+        if (error) console.error(error)
+        return name
+    }
     const handleSubmit = async (event) => {
         event.preventDefault();
         const res = await completeOnboarding({
             userName: username,
             interest: [...selectedInterests],
         });
-        const supabase = createClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL,
-            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-          );
+
         console.log("inserting user")
-        const { error } = await supabase 
+        const imgName = uploadImg()
+        const image = supabase.storage.from('pfp').getPublicUrl(imgName).data.publicUrl
+        const { error } = await supabase
             .from("users")
-            .insert({uuid: user.id, username: username, interests: selectedInterests})
+            .insert({ uuid: user.id, username: username, interests: selectedInterests, pfp: image })
         console.log(error)
         if (res?.message) {
             await user?.reload();
