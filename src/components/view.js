@@ -13,12 +13,12 @@ import { createClient } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 // Supabase client
 const supabase = createClient(
-  "https://kdrzgbdooarclrcudpzj.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtkcnpnYmRvb2FyY2xyY3VkcHpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzgxMTM4MjMsImV4cCI6MjA1MzY4OTgyM30.KcO39OFW_lpMf284hmuCbCC6Y_QAO83K1ZaYf9WrvHE"
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 );
 
 const CDNURL =
-  "https://kdrzgbdooarclrcudpzj.supabase.co/storage/v1/object/public/videos";
+  process.env.NEXT_PUBLIC_SUPABASE_CDNURL;
 
 // Video Component
 function Video({ src, direction }) {
