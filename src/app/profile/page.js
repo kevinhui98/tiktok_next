@@ -26,11 +26,11 @@ export default function Profile() {
             <Nav />
             <Box width={'75vw'} display={'flex'} flexDirection={'column'} mt={5} ml={8}>
                 <Stack direction={'row'} gap={3}>
-                    <img src={user.imageUrl} alt='userImg' style={{ width: '20%', height: 'auto', borderRadius: '50%' }} />
+                    <img src={user?.imageUrl} alt='userImg' style={{ width: '20%', height: 'auto', borderRadius: '50%' }} />
                     <Stack direction={'column'} gap={1} mt={3}>
                         <Stack direction={'row'} gap={3}>
-                            <Typography fontWeight={'bold'} variant='h5'>{user.username}</Typography>
-                            <Typography variant='h6'>{user.fullName}</Typography>
+                            <Typography fontWeight={'bold'} variant='h5'>{user?.username}</Typography>
+                            <Typography variant='h6'>{user?.fullName}</Typography>
                         </Stack>
                         <Stack direction={'row'} gap={2}>
                             <Button sx={{ bgcolor: red[500], textTransform: 'none', color: 'white', py: 1, px: 2 }}>Edit Profile</Button>

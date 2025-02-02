@@ -11,6 +11,7 @@ import LightbulbIcon from "@mui/icons-material/Lightbulb";
 import { createClient } from "@supabase/supabase-js";
 import { v4 as uuidv4 } from "uuid";
 import { useDropzone } from "react-dropzone";
+import { useRouter } from "next/navigation";
 const supabase = createClient(
   "https://kdrzgbdooarclrcudpzj.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtkcnpnYmRvb2FyY2xyY3VkcHpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzgxMTM4MjMsImV4cCI6MjA1MzY4OTgyM30.KcO39OFW_lpMf284hmuCbCC6Y_QAO83K1ZaYf9WrvHE"
@@ -41,7 +42,7 @@ export default function Upload() {
   ];
   const [uploadVideo, setUploadVideo] = useState(null)
   const [videoPreview, setVideoPreview] = useState(null);
-
+  const Router = useRouter();
   const onDrop = useCallback((acceptedFiles) => {
     if (acceptedFiles.length > 0) {
       const file = acceptedFiles[0];
@@ -72,6 +73,9 @@ export default function Upload() {
     if (error) {
       console.log(error);
       alert("error uploading file to supabase");
+    } else {
+      alert("successful upload")
+      Router.push('/')
     }
   }
   return (

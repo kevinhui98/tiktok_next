@@ -143,7 +143,6 @@ const Nav = () => {
           Search
         </Typography>
       </Button>
-      {/* </Stack> */}
       <Stack gap={1}>
         {navbtn.map((btn, idx) =>
           idx == 5 ? (
