@@ -2,6 +2,8 @@
 import Nav from "@/components/nav";
 import { Box, Stack, Button, Typography, TextField } from "@mui/material";
 import React, { useState, useCallback, useEffect } from "react";
+import { useUser } from "@clerk/nextjs";
+
 // import "../node_modules/video-react/dist/video-react.css";
 // import { Player } from "video-react";
 import VideocamIcon from "@mui/icons-material/Videocam";
@@ -18,7 +20,26 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 );
 
+const extractTopicsAndDescription = (description) => {
+  const topics = [];
+  const textParts = [];
+
+  // Regex to find words starting with #
+  const words = description.split(/\s+/);
+  
+  words.forEach(word => {
+      if (word.startsWith("#")) {
+          topics.push(word.substring(1)); // Remove the '#' from the topic
+      } else {
+          textParts.push(word);
+      }
+  });
+
+  return { topics, description: textParts.join(" ") };
+};
+
 export default function Upload() {
+  const { user } = useUser();
   const fileReq = [
     {
       title: "Size and duration",
@@ -65,22 +86,61 @@ export default function Upload() {
     maxSize: 500 * 1024 * 1024, // Limit file size to 500MB
   });
   const uploadFile = async () => {
-    const videoFile = uploadVideo
-    console.log("Upload!");
-    console.log(videoFile.size); // 50MB limit
-    const { error } = await supabase.storage
-      .from("videos")
-      .upload(uuidv4() + ".mp4", videoFile);
+    if (!uploadVideo) {
+        alert("No video selected.");
+        return;
+    }
+
+    const videoFile = uploadVideo;
+    console.log("Upload started!");
+
+    // Check file size (50MB limit)
+    if (videoFile.size > 50 * 1024 * 1024) {
+        alert("File size exceeds 50MB limit.");
+        return;
+    }
+
+    // Extract topics and cleaned description
+    const { topics, description } = extractTopicsAndDescription(uploadDescription);
+
+    console.log("Extracted Topics:", topics);
+    console.log("Final Description:", description);
+
+    console.log("Uploading video to storage...");
+    const fileName = uuidv4() + ".mp4";
+
+    const { data: uploadData, error: uploadError } = await supabase.storage
+        .from("videos")
+        .upload(fileName, videoFile);
+
+    if (uploadError) {
+        console.log(uploadError);
+        alert("Error uploading file to Supabase.");
+        return;
+    }
+
+    // Get the public URL of the uploaded video
+    const videoUrl = supabase.storage.from("videos").getPublicUrl(fileName).data.publicUrl;
+
+    console.log("Inserting video metadata into database...");
+    console.log(user?.id)
+    const { error } = await supabase.from("videos").insert({
+        topics: topics, // Stores extracted topics (array)
+        url: videoUrl,
+        uploaded_by: `${ user?.id }`,
+        description: description, // Stores cleaned description
+    });
 
     if (error) {
-      console.log(error);
-      alert("error uploading file to supabase");
-    } else {
-      ßß
-      alert("successful upload")
-      Router.push('/')
+        console.log(error);
+        alert("Error inserting video data into Supabase.");
+        return;
     }
-  }
+
+    console.log("Upload successful!");
+    alert("Video uploaded successfully!");
+    Router.push('/');
+};
   return (
     <Stack direction={"row"}>
       <Nav />

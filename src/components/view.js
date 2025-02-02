@@ -51,7 +51,9 @@ const View = () => {
   const Router = useRouter();
   // Fetch videos from Supabase
   async function getVideos() {
-    const { data, error } = await supabase.storage.from("videos").list("");
+    const {data, error } = await supabase.from('videos').select('*')
+    // const { data, error } = await supabase.storage.from("videos").list("");
+    console.log(data.id)
     if (error) {
       console.error(error);
       alert("Error grabbing files from Supabase");
@@ -62,8 +64,6 @@ const View = () => {
       console.log(videoURLs)
       setVideos(videoURLs);
     }
-
-
   }
   useEffect(() => {
     getVideos();
