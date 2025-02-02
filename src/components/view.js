@@ -11,6 +11,7 @@ import { React, useState, useEffect } from "react";
 import { grey } from "@mui/material/colors";
 import { createClient } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
+import { CoPresent } from "@mui/icons-material";
 // Supabase client
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -52,17 +53,12 @@ const View = () => {
   // Fetch videos from Supabase
   async function getVideos() {
     const {data, error } = await supabase.from('videos').select('*')
-    const {id, created_at, topics, url, uploaded_by, description} = data
-    // const { data, error } = await supabase.storage.from("videos").list("");
-    console.log(id)
     if (error) {
       console.error(error);
       alert("Error grabbing files from Supabase");
-      return;
     } else {
       // Convert file names to full URLs
-      const videoURLs = data.map((file) => `${CDNURL}/${file.name}`);
-      console.log(videoURLs)
+      const videoURLs = data.map((video) => video.url);
       setVideos(videoURLs);
     }
   }

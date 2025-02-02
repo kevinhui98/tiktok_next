@@ -103,7 +103,6 @@ export default function Upload() {
 
     console.log("Extracted Topics:", topics);
     console.log("Final Description:", description);
-
     console.log("Uploading video to storage...");
     const fileName = uuidv4() + ".mp4";
 
