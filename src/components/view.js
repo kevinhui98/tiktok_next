@@ -52,8 +52,9 @@ const View = () => {
   // Fetch videos from Supabase
   async function getVideos() {
     const {data, error } = await supabase.from('videos').select('*')
+    const {id, created_at, topics, url, uploaded_by, description} = data
     // const { data, error } = await supabase.storage.from("videos").list("");
-    console.log(data.id)
+    console.log(id)
     if (error) {
       console.error(error);
       alert("Error grabbing files from Supabase");

@@ -88,7 +88,6 @@ export default function Upload() {
   const uploadFile = async () => {
     if (!uploadVideo) {
         alert("No video selected.");
-        return;
     }
 
     const videoFile = uploadVideo;
@@ -97,7 +96,6 @@ export default function Upload() {
     // Check file size (50MB limit)
     if (videoFile.size > 50 * 1024 * 1024) {
         alert("File size exceeds 50MB limit.");
-        return;
     }
 
     // Extract topics and cleaned description
@@ -116,7 +114,6 @@ export default function Upload() {
     if (uploadError) {
         console.log(uploadError);
         alert("Error uploading file to Supabase.");
-        return;
     }
 
     // Get the public URL of the uploaded video
@@ -134,12 +131,10 @@ export default function Upload() {
     if (error) {
         console.log(error);
         alert("Error inserting video data into Supabase.");
-        return;
-    }
-
-    console.log("Upload successful!");
-    alert("Video uploaded successfully!");
-    Router.push('/');
+    } else {
+      console.log("Upload successful!");
+      Router.push('/');
+  }
 };
   return (
     <Stack direction={"row"}>
