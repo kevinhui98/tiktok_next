@@ -4,7 +4,7 @@ import { Box, Stack } from "@mui/material";
 
 export default function Home() {
   return (
-    <Stack direction={'row'}>
+    <Stack direction={'row'} bgcolor={'black'}>
       <Nav />
       <View />
     </Stack>

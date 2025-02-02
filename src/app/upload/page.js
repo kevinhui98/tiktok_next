@@ -42,6 +42,7 @@ export default function Upload() {
   ];
   const [uploadVideo, setUploadVideo] = useState(null)
   const [videoPreview, setVideoPreview] = useState(null);
+  const [uploadDescription, setUploadDescription] = useState('')
   const Router = useRouter();
   const onDrop = useCallback((acceptedFiles) => {
     if (acceptedFiles.length > 0) {
@@ -74,6 +75,7 @@ export default function Upload() {
       console.log(error);
       alert("error uploading file to supabase");
     } else {
+      ßß
       alert("successful upload")
       Router.push('/')
     }
@@ -87,12 +89,13 @@ export default function Upload() {
         mt={6}
         ml={5}
         sx={{ bgcolor: "gray", borderRadius: "20px" }}
+        justifyContent={'space-evenly'}
       >
         {!uploadVideo && (
           <label
             {...getRootProps()}
             htmlFor="fileInput"
-            style={{ width: "78vw" }}
+            style={{ width: "78vw", }}
             className="
                 mx-auto
                 mt-8
@@ -101,7 +104,6 @@ export default function Upload() {
                 flex-col
                 items-center
                 justify-center
-                h-[450px]
                 text-center
                 p-3
                 border-2
@@ -111,16 +113,16 @@ export default function Upload() {
                 hover:bg-gray-100
                 hover:cursor-pointer"
           >
-            <Typography mt={4} className="text-[17px] text-black">
+            <Typography mt={4} className="text-[17px] text-black" sx={{ fontSize: '20px' }}>
               Select video to upload
             </Typography>
-            <Typography mt={1.5} className="text-gray-500 text-[13px]">
+            <Typography mt={1.5} className="text-gray-900 text-[13px]">
               Or drag and drop a file
             </Typography>
             <Typography
               px={2}
               py={1.5}
-              mt={8}
+              mt={3}
               className="text-white text-[15px] rounded-md"
               bgcolor={"#F02C56"}
             >
@@ -156,23 +158,47 @@ export default function Upload() {
               <source src={videoPreview} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
-            <Stack alignItems={'start'} justifyContent={'space-around'} width={'40%'}>
-              <Typography >Captions</Typography>
-              <TextField required autoComplete label='captions' width={'100%'} fullWidth height={'100px'} minRows={10} multiline></TextField>
-              <button
-                onClick={uploadFile}
-                disabled={!uploadVideo}
-                style={{
-                  marginTop: "20px",
-                  padding: "10px 20px",
-                  background: uploadVideo ? "blue" : "gray",
-                  color: "white",
-                  border: "none",
-                  cursor: uploadVideo ? "pointer" : "not-allowed",
-                }}
-              >
-                Upload Video
-              </button>
+            <Stack justifyContent={'space-around'} width={'40%'}>
+              <Typography >Descriptions</Typography>
+              <TextField required autoComplete label='descriptions' width={'100%'} fullWidth height={'100px'} minRows={10} multiline onChange={(e) => setUploadDescription(e.target.value)} />
+              <Stack direction={'row'} display={'flex'} justifyContent={'space-between'}>
+                <button
+                  onClick={uploadFile}
+                  disabled={!uploadVideo}
+                  style={{
+                    marginTop: "20px",
+                    padding: "10px 20px",
+                    background: uploadVideo ? "blue" : "gray",
+                    color: "white",
+                    border: "none",
+                    cursor: uploadVideo ? "pointer" : "not-allowed",
+                    borderRadius: '10px'
+                  }}
+                >
+                  Upload Video
+                </button>
+                <button
+                  style={{
+                    marginTop: "20px",
+                    padding: "10px 20px",
+                    background: "red",
+                    color: "white",
+                    border: "none",
+                    borderRadius: '10px'
+                  }}
+                  onClick={() => {
+                    const confirmDiscard = window.confirm(
+                      "Are you sure you want to discard this video?"
+                    );
+
+                    if (confirmDiscard) {
+                      setUploadVideo(null)
+                      if (videoPreview) URL.revokeObjectURL(videoPreview);
+                      setVideoPreview(null)
+                    }
+
+                  }}>Discard</button>
+              </Stack>
             </Stack>
           </Stack>
         )}
@@ -183,10 +209,10 @@ export default function Upload() {
                 {text.icon}
               </Box>
               <Stack direction={"column"}>
-                <Typography variant="body1" fontWeight={"bold"}>
+                <Typography fontWeight={"bold"} sx={{ fontSize: '1.5em' }}>
                   {text.title}
                 </Typography>
-                <Typography variant="body2" color="white">
+                <Typography color="white">
                   {text.description}
                 </Typography>
               </Stack>
