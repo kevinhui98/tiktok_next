@@ -26,10 +26,10 @@ const extractTopicsAndDescription = (description) => {
 
   // Regex to find words starting with #
   const words = description.split(/\s+/);
-  
+
   words.forEach(word => {
       if (word.startsWith("#")) {
-          topics.push(word.substring(1)); // Remove the '#' from the topic
+          topics.push(word); // Keep the '#' in the topic
       } else {
           textParts.push(word);
       }
