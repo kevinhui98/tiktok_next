@@ -52,6 +52,10 @@ const View = () => {
   const Router = useRouter();
   // Fetch videos from Supabase
   async function getVideos() {
+    // const generateLikedVideos = await generateLikedVideos(user.id);
+    // generatedLikedVideos.forEach(video => {
+    //   console.log(`Video ID: ${video.id}, Topics: ${video.topics.join(', ')}, Liked: ${video.liked}`);
+    // })
     const {data, error } = await supabase.from('videos').select('*')
     if (error) {
       console.error(error);
