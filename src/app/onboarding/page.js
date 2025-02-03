@@ -8,7 +8,7 @@ import { InterestSelector } from "@/components/interestSelector";
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { SupabaseAuthClient } from "@supabase/supabase-js/dist/module/lib/SupabaseAuthClient";
 import { createClient } from "@supabase/supabase-js";
-
+import { v4 as uuidv4 } from "uuid";
 export default function OnboardingComponent() {
     const [error, setError] = useState("");
     const [selectedInterests, setSelectedInterests] = useState([]);
@@ -64,12 +64,13 @@ export default function OnboardingComponent() {
     };
     const [searchTerm, setSearchTerm] = useState('')
     const filteredInterest = Object.values(AVAILABLE_INTERESTS).filter((interest) => interest.toLowerCase().includes(searchTerm.toLowerCase()))
-    const uploadImg = async (e) => {
-        e.preventDefault();
+    const uploadImg = async () => {
         const image = user?.imageUrl ? user?.imageUrl : 'blank-pfp.png'
         const name = (uuidv4() + '.png', image)
-        const { error } = await supabase.storage.from("pfp").upload()
-        if (error) console.error(error)
+        const { error } = await supabase.storage.from("pfp").upload(name)
+        if (error) {
+            console.log(error)
+        }
         return name
     }
     const handleSubmit = async (event) => {

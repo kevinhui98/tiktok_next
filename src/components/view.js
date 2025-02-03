@@ -33,6 +33,7 @@ function Video({ src, direction }) {
       width="33%"
       src={src}
       type="video/mp4"
+      style={{ borderRadius: '30px' }}
     />
   );
 }
@@ -43,6 +44,7 @@ const View = () => {
   const [direction, setDirection] = useState("slide-in"); // Track slide direction
   const { user } = useUser()
   const [activeIndex, setActiveIndex] = useState([]);
+  const [uploaderImg, setUploaderImg] = useState(null)
   const handleInteraction = (index) => {
     setActiveIndex((prev) => prev.includes(index)
       ? prev.filter((b) => b !== index) // Remove if already active (pop)
@@ -56,14 +58,26 @@ const View = () => {
     // generatedLikedVideos.forEach(video => {
     //   console.log(`Video ID: ${video.id}, Topics: ${video.topics.join(', ')}, Liked: ${video.liked}`);
     // })
-    const {data, error } = await supabase.from('videos').select('*')
+    const { data, error } = await supabase.from('videos').select('*')
     if (error) {
       console.error(error);
       alert("Error grabbing files from Supabase");
     } else {
       // Convert file names to full URLs
+      console.log('getvideo data', data)
+      // userPfp(data.map((video) => video.uploaded_by))
       const videoURLs = data.map((video) => video.url);
       setVideos(videoURLs);
+    }
+  }
+  async function userPfp(uploader) {
+    const { data, error } = await supabase.from('users').select('uuid,pfp')
+    if (error) {
+      console.log(error)
+    } else {
+      // const userImage = data.map((user) => user === uploader)
+      console.log('data', data)
+      // setUploaderImg(userImage)
     }
   }
   useEffect(() => {
@@ -143,11 +157,11 @@ const View = () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
-
+  userPfp()
 
   return (
-    <Stack direction="row" width="90vw">
-      <Stack direction="row" width="80vw" gap={2} justifyContent="center">
+    <Stack direction="row" height='100vh' width={'90vw'} py={2} justifyContent={'space-between'} display={'flex'}>
+      <Stack direction="row" width="80vw" gap={2} justifyContent="center" order={1}>
         {videos.length > 0 ? (
           <Video
             key={currentVideoIndex}
@@ -160,7 +174,7 @@ const View = () => {
 
         <Stack direction="column" justifyContent="end" gap={1} mb={1}>
           <Button onClick={() => Router.push('/profile')}>
-            <img src={user?.imageUrl} alt='user' style={{
+            <img src={uploaderImg} alt='user' style={{
               width: '3rem', height: 'auto', borderRadius: '50%', display: "flex",
               flexDirection: "column",
               justifyContent: "center",
@@ -193,7 +207,7 @@ const View = () => {
         </Stack>
       </Stack>
 
-      <Stack direction="column" justifyContent="center" gap={2}>
+      <Stack direction="column" justifyContent="center" gap={2} order={2}>
         <Button onClick={() => handleArrowClick("up")}>
           <ArrowUpwardIcon
             fontSize="large"
