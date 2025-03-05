@@ -1,36 +1,21 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+For this project, imagine you are an engineer at a social media startup. You are tasked with building out a platform where users can create, share, and discover short-form video content, just like TikTok.
 
-## Getting Started
+Project Requirements:
 
-First, run the development server:
+Build a full-stack web app where users can post short-form videos and view videos from others in a feed
+Allow users to like and comment on videos, and let them share and favorite videos
+Implement a smart recommendation system for what videos a user sees on their feed
+Challenges:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Implement a moderation system to prevent users from uploading inappropriate content
+Make your recommendation system adaptive based on the user's most recent activity
+Ensure minimal latency in the video uploads and playback
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Resources
+https://arxiv.org/pdf/2209.07663
+https://support.tiktok.com/en/using-tiktok/exploring-videos/how-tiktok-recommends-content
+https://nextjs.org/docs/app/building-your-application/optimizing/videos
+https://next-video.dev/
+https://clerk.com/docs/references/nextjs/add-onboarding-flow
+https://github.com/weaviate/BookRecs
+https://github.com/clerk/nextjs-auth-starter-template
